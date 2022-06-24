@@ -30,13 +30,18 @@ class makeBoard {
     this.currPlayer = player1;
     this.gameOver = false;
     this.board = [];
-    for (let y = 0; y < this.height; y++) {
-      // for (let heights in this.height) {
-      //   this.height += heights;
-      this.board.push(Array.from({ length: this.width }));
-    }
+    this.makeBoard();
+    this.makeHtmlBoard()
   }
 
+makeBoard() {
+  this.board = [];
+  for (let y = 0; y < this.height; y++) {
+    // for (let heights in this.height) {
+    //   this.height += heights;
+    this.board.push(Array.from({ length: this.width }));
+  }
+}
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
@@ -47,7 +52,8 @@ makeHtmlBoard() {
   // make column tops (clickable area for adding a piece to that column)
   const top = document.createElement('tr');
   top.setAttribute('id', 'column-top');
-  top.addEventListener('click', this.handleClick);
+  this.gameClick = this.handleClick.bind(this);
+  top.addEventListener('click', this.gameClick);
 
   for (let x = 0; x < this.width; x++) {
     const headCell = document.createElement('td');
@@ -81,13 +87,12 @@ findSpotForCol(x) {
   }
   return null;
 }
-
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
-  piece.classList.add(`p${this.currPlayer}`);
+  piece.style.backgroundColor = this.currPlayer.color;
   piece.style.top = -50 * (y + 2);
 
   const spot = document.getElementById(`${y}-${x}`);
@@ -98,6 +103,8 @@ placeInTable(y, x) {
 
 endGame(msg) {
   alert(msg);
+  const top = document.querySelector("#column-top");
+  top.removeEventListener("click", this.gameClick);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -112,22 +119,23 @@ handleClick(evt) {
     return;
   }
 
+
   // place piece in board and add to HTML table
-  board[y][x] = currPlayer;
-  placeInTable(y, x);
-  
+  this.board[y][x] = this.currPlayer;
+  this.placeInTable(y, x);
+
   // check for win
-  if (checkForWin()) {
+  if (this.checkForWin()) {
     return this.endGame(`Player ${this.currPlayer} won!`);
   }
   
   // check for tie
-  if (board.every(row => row.every(cell => cell))) {
+  if (this.board.every(row => row.every(cell => cell))) {
     return this.endGame('Tie!');
   }
     
   // switch players
-  currPlayer = currPlayer === 1 ? 2 : 1;
+  this.currPlayer = this.currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
