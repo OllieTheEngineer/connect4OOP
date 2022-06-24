@@ -4,16 +4,16 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
-class Game {
-  constructor(player1, player2, height = 6, width = 7) {
-    this.players = [player1, player2];
-    this.height = height;
-    this.width = width;
-    this.currPlayer = player1;
-    this.gameOver = false;
-  }
+// class Game {
+//   constructor(player1, player2, height = 6, width = 7) {
+//     this.players = [player1, player2];
+//     this.height = height;
+//     this.width = width;
+//     this.currPlayer = player1;
+//     this.gameOver = false;
+//   }
   
-}
+// }
 
 // let currPlayer = 1; // active player: 1 or 2
 // let board = []; // array of rows, each row is array of cells  (board[y][x])
@@ -23,19 +23,24 @@ class Game {
  */
 
 class makeBoard {
-  constructor(board) {
+  constructor(player1, player2, height = 6, width = 7) {
+    this.players = [player1, player2];
+    this.height = height;
+    this.width = width;
+    this.currPlayer = player1;
+    this.gameOver = false;
     this.board = [];
     for (let y = 0; y < this.height; y++) {
-    // for (let heights in this.height) {
-    //   this.height += heights;
+      // for (let heights in this.height) {
+      //   this.height += heights;
       this.board.push(Array.from({ length: this.width }));
     }
   }
-}
+
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
-function makeHtmlBoard() {
+makeHtmlBoard() {
   const board = document.getElementById('board');
   board.innerHTML = '';
 
@@ -63,12 +68,12 @@ function makeHtmlBoard() {
     }
 
     board.append(row);
+    }
   }
-}
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
-function findSpotForCol(x) {
+findSpotForCol(x) {
   for (let y = this.height - 1; y >= 0; y--) {
     if (!this.board[y][x]) {
       return y;
@@ -79,7 +84,7 @@ function findSpotForCol(x) {
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
-function placeInTable(y, x) {
+placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
   piece.classList.add(`p${this.currPlayer}`);
@@ -91,13 +96,13 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 
-function endGame(msg) {
+endGame(msg) {
   alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
 
-function handleClick(evt) {
+handleClick(evt) {
   // get x from ID of clicked cell
   const x = +evt.target.id;
 
@@ -127,7 +132,7 @@ function handleClick(evt) {
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
-function checkForWin() {
+checkForWin() {
   function _win(cells) {
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
@@ -155,11 +160,9 @@ function checkForWin() {
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
+        }
       }
     }
   }
 }
-
-
-new makeBoard(board);
-makeHtmlBoard();
+new makeBoard(this.board);
