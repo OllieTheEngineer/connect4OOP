@@ -4,16 +4,6 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
-// class Game {
-//   constructor(player1, player2, height = 6, width = 7) {
-//     this.players = [player1, player2];
-//     this.height = height;
-//     this.width = width;
-//     this.currPlayer = player1;
-//     this.gameOver = false;
-//   }
-  
-// }
 
 // let currPlayer = 1; // active player: 1 or 2
 // let board = []; // array of rows, each row is array of cells  (board[y][x])
@@ -30,6 +20,7 @@ class makeBoard {
     this.currPlayer = player1;
     this.gameOver = false;
     this.board = [];
+    // this.handleClick();
     this.makeBoard();
     this.makeHtmlBoard()
   }
@@ -37,8 +28,6 @@ class makeBoard {
 makeBoard() {
   this.board = [];
   for (let y = 0; y < this.height; y++) {
-    // for (let heights in this.height) {
-    //   this.height += heights;
     this.board.push(Array.from({ length: this.width }));
   }
 }
@@ -148,8 +137,8 @@ checkForWin() {
 
     return cells.every(
       ([y, x]) =>
-        y >= 0 &&
-        y < this.height &&
+        y = 0 &&
+        y <= this.height &&
         x >= 0 &&
         x < this.width &&
         this.board[y][x] === this.currPlayer
